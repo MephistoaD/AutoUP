@@ -1,0 +1,92 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row mt-2">
+        <div class="col">
+          <h1>{{ instance.name }}</h1>
+        </div>
+
+        <div class="col">
+          {% include "snippets/status_button.html" with link=instance.maintenances.current.job status=instance.maintenances.current.status num_triggers=instance.maintenances.current.triggers|length %}
+        </div>
+      </div>
+      <div class="row mt-2">
+        <!-- Maintenance required since -->
+        <div class="col">
+          <span class="font-italic">Maintenance required since:</span>
+          {% with sorted_triggers=instance.maintenances.current.triggers|dictsort:"startsAt" %}
+            <span class="ml-2">{{ sorted_triggers.0.startsAt }}</span>
+          {% endwith %}
+        </div>
+
+        <!-- Maintenance started at -->
+        <div class="col">
+          <span class="font-italic">Maintenance started at:</span>
+          <span class="ml-2">{{ instance.maintenances.current.startsAt }}</span>
+        </div>
+      </div>
+
+      <br><br><br>
+      <div class="row">
+        {% include "snippets/maintenance_triggers.html" with maintenance=instance.maintenances.current %}
+        {% include "snippets/maintenance_inhibitors.html" with maintenance=instance.maintenances.current %}
+      </div>
+
+      
+      {% if instance.maintenances.history %}
+      <h2 class="mt-5">Maintenance History</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Start</th>
+            <th>End</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for maintenance in instance.maintenances.history %}
+          <tr class="expandable-row">
+            <td>
+              {% include "snippets/status_button.html" with link=maintenance.job status=maintenance.status num_triggers=maintenance.triggers|length %}
+            </td>
+            <td>{{ maintenance.startsAt }}</td>
+            <td>{{ maintenance.endsAt }}</td>
+          </tr>
+          <tr class="expanded-details">
+            <td class="row" colspan="3">
+              {% include "snippets/maintenance_triggers.html" with maintenance=maintenance %}
+              {% include "snippets/maintenance_inhibitors.html" with maintenance=maintenance %}
+      
+              {% comment %} <div class="col-md-6">
+                <h5>Triggers</h5>
+                <ul>
+                  <li><span class="text-success">&#10004;</span> <span class="text-success font-weight-bold">Trigger
+                      description 1</span></li>
+                  <li><span class="text-success">&#10004;</span> <span class="text-success font-weight-bold">Trigger
+                      description 2</span></li>
+                  <!-- Add more triggers as needed -->
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>Inhibitors</h5>
+                <ul>
+                  <li><span class="text-danger">&#10008;</span> <span class="text-danger font-weight-bold">Inhibitor
+                      description 1</span></li>
+                  <li><span class="text-danger">&#10008;</span> <span class="text-danger font-weight-bold">Inhibitor
+                      description 2</span></li>
+                  <!-- Add more inhibitors as needed -->
+                </ul>
+              </div> {% endcomment %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

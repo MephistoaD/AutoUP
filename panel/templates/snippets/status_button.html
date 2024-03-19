@@ -1,0 +1,18 @@
+<!-- 
+  Expected arguments
+  - link
+  - status
+  - num_triggers
+-->
+{% if status != "BLOCKED" or num_triggers >= 1 %}
+{% if status != "BLOCKED" %}
+<a href="{{ link }}">
+{% endif %}
+  <div class="col-auto rounded-pill px-3 py-1 bg-{% if status == 'BLOCKED' %}warning{% elif status == 'QUEUED' or status == 'RUNNING' %}info{% elif status == "FAILED" %}danger{% endif %} text-white d-inline-flex align-items-center">
+    <i class="fa fa-{% if status == 'BLOCKED' %}lock{% elif status == 'QUEUED' %}clock-o{% elif status == 'RUNNING' %}refresh{% elif status == 'SUCCESS' %}check{% elif status == 'FAILED' %}bug{% endif %} mr-1"></i>
+    {{ status }}
+  </div>
+{% if status != "BLOCKED" %}
+</a>
+{% endif %}
+{% endif %}

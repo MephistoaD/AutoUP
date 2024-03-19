@@ -1,0 +1,21 @@
+{% comment %} 
+Expected arguments:
+- maintenance
+{% endcomment %}
+<div class="col-md-6">
+    <h5>Inhibitors</h5>
+    <ul>
+      {% if maintenance.inhibitors %}
+      {% for inhibitor in maintenance.inhibitors %}
+      <li>
+        <span class="text-{% if inhibitor.active %}danger{% else %}muted{% endif %}">&#10008;</span> 
+        <span class="text-{% if inhibitor.active %}danger{% else %}muted{% endif %} font-weight-bold">{{ inhibitor.alertName }}</span>
+      </li>
+      {% endfor %}
+      {% else %}
+      <li>
+        <span class="text-success">&#10004;</span> <span class="text-success font-weight-bold">There are currently no inhibitors</span>
+      </li>
+      {% endif %}
+    </ul>
+  </div>

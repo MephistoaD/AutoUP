@@ -1,0 +1,20 @@
+{% comment %} 
+Expected arguments:
+maintenance 
+{% endcomment %}
+  <div class="col-md-6">
+    <h5>Triggers</h5>
+    <ul>
+      {% if maintenance.triggers %}
+      {% for trigger in maintenance.triggers %}
+      <li>
+        <span class="text-success">&#10004;</span> <span class="text-success font-weight-bold">{{ trigger.alertName }}</span><span class="text-success"> ({{ trigger.origin }})</span>
+      </li>
+      {% endfor %}
+      {% else %}
+      <li>
+        <span class="text-danger">&#10008;</span> <span class="text-danger font-weight-bold">There are currently no triggers</span>
+      </li>
+      {% endif %}
+    </ul>
+  </div>

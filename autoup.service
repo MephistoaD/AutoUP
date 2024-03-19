@@ -1,0 +1,22 @@
+[Unit]
+Description=AutoUp WSGI Service
+Documentation=https://github.com/MephistoaD/AutoUP
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+User=autoup
+Group=autoup
+PIDFile=/var/tmp/autoup.pid
+WorkingDirectory=/opt/autoup
+
+ExecStart=/opt/autoup/venv/bin/gunicorn --pid /var/tmp/autoup.pid --pythonpath /opt/autoup --config /opt/autoup/gunicorn.py autoup.wsgi
+
+Restart=on-failure
+RestartSec=30
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

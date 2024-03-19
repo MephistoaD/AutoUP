@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoUP Dashboard</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+{% include "snippets/navbar.html" %}
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col">
+        <div class="card h-100 d-flex flex-column justify-content-center">
+          <div class="card-body text-center">
+            <h4 class="card-title">[Number]</h4>
+            <h5 class="card-subtitle">Currently blocked</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 d-flex flex-column justify-content-center">
+          <div class="card-body text-center">
+            <h4 class="card-title">[Number]</h4>
+            <h5 class="card-subtitle">Maintenances today</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 d-flex flex-column justify-content-center">
+          <div class="card-body text-center">
+            <h4 class="card-title">[Number]</h4>
+            <h5 class="card-subtitle">Maintenances this month</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 d-flex flex-column justify-content-center">
+          <div class="card-body text-center">
+            <h4 class="card-title">[Number]</h4>
+            <h5 class="card-subtitle">Maintenances this year</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 d-flex flex-column justify-content-center">
+          <div class="card-body text-center">
+            <h4 class="card-title">[Number]</h4>
+            <h5 class="card-subtitle">Maintenances total</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<script>
+  $(document).ready(function(){
+    $('.expandable-row').click(function(){
+      $(this).next('.expanded-details').toggle();
+    });
+  });
+</script>
+<style>
+  .expanded-details {
+    display: none;
+  }
+</style>
+</body>
+</html>

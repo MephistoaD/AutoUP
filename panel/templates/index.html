@@ -1,0 +1,34 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h2>Instances</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Maintenance</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for instance in instances %}
+    <tr class="expandable-row">
+      <td><a href="details/{{ instance.id }}">{{ instance.name }}</a></td>
+      <td>{{ instance.history.0.startsAt | default:"Never" }}</td>
+      <td>
+        {% include "snippets/status_button.html" with link=instance.maintenances.current.job status=instance.maintenances.current.status num_triggers=instance.maintenances.current.triggers|length %}
+        {% if instance.maintenances.history %}
+        {% include "snippets/status_button.html" with link=instance.maintenances.history.0.job status=instance.maintenances.history.0.status num_triggers=instance.maintenances.history.0.triggers|length %}
+        {% endif %}
+      </td>
+    </tr>
+    <tr class="expanded-details">
+      <td class="row" colspan="3">
+        {% include "snippets/maintenance_triggers.html" with maintenance=instance.maintenances.current %}
+        {% include "snippets/maintenance_inhibitors.html" with maintenance=instance.maintenances.current %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
