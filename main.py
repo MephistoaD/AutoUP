@@ -78,7 +78,7 @@ def previousRemainsRunning():
 def main():
     instances = getInstances()
 
-    print(json.dumps(instances, indent=2))
+    if CONFIG['settings']['debug']: print(json.dumps(instances, indent=2))
 
     # Is the last maintenance already finished?
     # store exit status
@@ -88,13 +88,13 @@ def main():
         # get the prioritized schedulable instance
         current_instance = next((instance for instance in instances if instance.get('schedulable')), None)
 
-        print(json.dumps(current_instance, indent=2))
+        if CONFIG['settings']['debug']: print(json.dumps(current_instance, indent=2))
 
         if CONFIG['settings']['trigger_jobs'] and current_instance:
             # schedule maintenance
             current_maintenance = Semaphore.triggerMaintenance(instance=current_instance, semaphore_config=CONFIG['semaphore'])
 
-            print(json.dumps(current_maintenance, indent=2))
+            if CONFIG['settings']['debug']: print(json.dumps(current_maintenance, indent=2))
 
 
             # write history
