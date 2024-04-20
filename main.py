@@ -65,13 +65,13 @@ def isSchedulable(instance):
 def previousRemainsRunning():
     history = History.getHistory(file_path=CONFIG['history']['file'])
     
-    running_jobs = [ m for m in history if m['state'] not in ["SUCCESS", "ERROR"] ]
+    running_jobs = [ m for m in history if m['state'] not in ["SUCCESS", "ERROR", "STOPPED"] ]
 
     for maintenance in running_jobs: 
         Semaphore.updateState(maintenance=maintenance, semaphore_config=CONFIG['semaphore'])
         History.writeMaintenance(maintenance=maintenance, file_path=CONFIG['history']['file'])
 
-    running_jobs = [ m for m in history if m['state'] not in ["SUCCESS", "ERROR"] ]
+    running_jobs = [ m for m in history if m['state'] not in ["SUCCESS", "ERROR", "STOPPED"] ]
 
     return len(running_jobs) > 0
 
@@ -84,7 +84,6 @@ def main():
     # store exit status
     if not previousRemainsRunning():
 
-
         # get the prioritized schedulable instance
         current_instance = next((instance for instance in instances if instance.get('schedulable')), None)
 
@@ -92,6 +91,7 @@ def main():
 
         if CONFIG['settings']['trigger_jobs'] and current_instance:
             # schedule maintenance
+            print("schedule")
             current_maintenance = Semaphore.triggerMaintenance(instance=current_instance, semaphore_config=CONFIG['semaphore'])
 
             if CONFIG['settings']['debug']: print(json.dumps(current_maintenance, indent=2))
