@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoUp</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Custom CSS to increase the size of the symbol */
+        .text-success, .text-danger, .text-hourglass {
+            font-size: 35px; /* Adjust the font size as needed */
+        }
+    </style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#" onclick="reloadPage()">AutoUp</a>
+</nav>
+
+<div class="container mt-5">
+    <div class="mt-4">
+        <h4>Pending Upgrades</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Score</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Pool</th>
+                <th>Upgrade Schedule</th>
+                <th>Triggers</th>
+                <th>Inhibitors</th>
+            </tr>
+            </thead>
+            <tbody>
+{% for instance in instances %}
+            <!-- {{ instance.name }} -->
+            <tr>
+                <td>
+{% if instance.schedulable %}
+                    <span class="text-hourglass">&#8987;</span>
+{% elif not instance.schedulable and instance.triggers | length == 0 %}
+                    <span class="text-success">&#10004;</span>
+{% else %}
+                    <span class="text-danger">&#10008;</span>
+{% endif %}
+                    <p>  {{ instance.score }}</p>
+                </td>
+                <td>{{ instance.name }}</td>
+                <td>{{ instance.role }}</td>
+                <td>{{ instance.pool }}</td>
+                <td>{{ instance.upgrade_schedule }}</td>
+                <td>
+                    <ul>
+{% for trigger in instance.triggers %}
+                        <li>
+                            <b>{{ trigger.name }}</b>
+{% if "origin" in trigger %}
+                            {{ trigger.origin }}
+{% endif %}
+{% if trigger.count != "0" %}
+                            <i>(quantity: {{ trigger.count }})</i>
+{% endif %}
+                        </li>
+{% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+{% for inhibitor in instance.inhibitors %}
+                        <li>
+                            <b>{{ inhibitor.name }}</b>
+{% if "origin" in inhibitor %}
+                            {{ inhibitor.origin }}
+{% endif %}
+{% if inhibitor.count != "0" %}
+                            <i>(quantity: {{ inhibitor.count }})</i>
+{% endif %}
+                        </li>
+{% endfor %}
+                    </ul>
+                </td>
+            </tr>
+{% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        <h4>History</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>State</th>
+                <th>Target</th>
+                <th>Scheduled At</th>
+                <th>Upgrade Schedule</th>
+                <th>Severity</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+            <tbody>
+{% for maintenance in history %}
+            <tr>
+                <td>
+                    <a href="{{ maintenance.maintenance_url }}">
+                        {{ maintenance.id }}
+                    </a>
+                </td>
+                <td>
+                {% if maintenance.state == 'SUCCESS' %}
+                    <span class="text-success">&#10004;</span> <!-- Green checkmark for SUCCESS -->
+                {% elif maintenance.state == 'ERROR' %}
+                    <span class="text-danger">&#10008;</span> <!-- Red cross for ERROR -->
+                {% else %}
+                    <span class="text-info">&#8987;</span> <!-- Hourglass icon for other states -->
+                {% endif %}
+                </td>
+                <td>{{ maintenance.target }}</td>
+                <td>{{ maintenance.scheduled_at }}</td>
+                <td>{{ maintenance.instance.upgrade_schedule }}</td>
+                <td>{{ maintenance.instance.trigger_severity }}</td>
+                <td>{{ maintenance.instance.score }}</td>
+            </tr>
+{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Function to reload the page when navbar brand is clicked
+    function reloadPage() {
+        location.reload();
+    }
+</script>
+
+</body>
+</html>
