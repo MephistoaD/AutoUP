@@ -7,13 +7,16 @@ history: list(maintenance)
 
 class History(object):
 
-    def writeMaintenance(file_path, maintenance):
+    def writeMaintenance(file_path, maintenance, retention):
         history = History.getHistory(file_path=file_path)
 
         history = [item for item in history if item.get('id') != maintenance.get('id')]
         history.append(maintenance)
 
         history = sorted(history, key=lambda x: x['scheduled_at'], reverse=True)
+
+        # slice the last elements
+        history = history[0:retention]
 
         with open(file_path, 'w') as file:
             yaml.dump(history, file, default_flow_style=False)
