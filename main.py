@@ -69,7 +69,7 @@ def previousRemainsRunning():
 
     for maintenance in running_jobs: 
         Semaphore.updateState(maintenance=maintenance, semaphore_config=CONFIG['semaphore'])
-        History.writeMaintenance(maintenance=maintenance, file_path=CONFIG['history']['file'])
+        History.writeMaintenance(maintenance=maintenance, file_path=CONFIG['history']['file'], retention=CONFIG['history']['retention'])
 
     running_jobs = [ m for m in history if m['state'] not in ["SUCCESS", "ERROR", "STOPPED"] ]
 
@@ -98,7 +98,7 @@ def main():
 
 
             # write history
-            History.writeMaintenance(maintenance=current_maintenance, file_path=CONFIG['history']['file'])
+            History.writeMaintenance(maintenance=current_maintenance, file_path=CONFIG['history']['file'], retention=CONFIG['history']['retention'])
 
 
     # render html
