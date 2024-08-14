@@ -50,7 +50,7 @@
 {% endif %}
                     <p>  {{ instance.score }}</p>
                 </td>
-                <td>{{ instance.name }}</td>
+                <td>{% if 'vmid' in instance %}{{ instance.vmid }} ({{ instance.name }}){% else %}{{ instance.name }}{% endif %}</td>
                 <td>{{ instance.role }}</td>
                 <td>{{ instance.pool }}</td>
                 <td>{{ instance.upgrade_schedule }}</td>
