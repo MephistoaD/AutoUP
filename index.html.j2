@@ -21,7 +21,7 @@
     <a class="navbar-brand" href="#" onclick="reloadPage()">AutoUp</a>
 </nav>
 
-<div class="container mt-5">
+<div class="mr-5 ml-5 mt-5">
     <div class="mt-4">
         <h4>Pending Upgrades</h4>
         <table class="table">
@@ -51,7 +51,7 @@
                     <p>  {{ instance.score }}</p>
                 </td>
                 <td>{% if 'vmid' in instance %}{{ instance.vmid }} ({{ instance.name }}){% else %}{{ instance.name }}{% endif %}</td>
-                <td>{{ instance.role }}</td>
+                <td><span class="badge badge-primary">{{ instance.role }}</span></td>
                 <td>{{ instance.pool }}</td>
                 <td>{{ instance.upgrade_schedule }}</td>
                 <td>
