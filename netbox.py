@@ -16,7 +16,7 @@ class Netbox(object):
             if upgrade_after:
                 upgrade_after = upgrade_after['name']
             result.append(dict(
-                    name=instance['name'], # unique id
+                    name=f"{instance['name']} {'(' + instance['custom_fields']['vmid'] if 'vmid' in instance['custom_fields'] + ')'}", # unique id
                     nb_url=instance['url'],
                     role=instance['device_role']['name'],
                     status=instance['status']['label'],
