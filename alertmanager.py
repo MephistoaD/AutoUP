@@ -24,7 +24,7 @@ class AlertManager(object):
                             count=count,
                         ))
                     
-                data['trigger_severity'] = sum(int(trigger['count']) for trigger in data['triggers'])
+                data['trigger_severity'] = sum(int(float(trigger['count'])) for trigger in data['triggers']) # string -> float -> int
         
                 result[instance['labels']['instance']] = data
         return result
