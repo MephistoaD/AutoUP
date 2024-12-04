@@ -37,3 +37,11 @@ class History(object):
         
         return result
     
+
+    def repairHistory(file_path):
+        h = History.getHistory(file_path)
+
+        h = h[:-1]
+
+        with open(file_path, 'w') as file:
+                yaml.dump(h, file, default_flow_style=False)
