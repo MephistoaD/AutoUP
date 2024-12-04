@@ -122,4 +122,7 @@ if __name__ == "__main__":
     # Example usage of CONFIG after loading
     if CONFIG:
         print("Parsed config correctly.")
-        main()
+        try:
+          main()
+        except ValueError as e:
+          History.repairHistory(file_path=CONFIG['history']['file'])
